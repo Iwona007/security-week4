@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Result</title>
+</head>
+<body>
+<form>
+<label>Result</label>
+<p th:text="${text.getPublicKey()}"></p><br>
+</form>
+
+<td><a type="button" th:href="@{/decode}">Decrypt</a></td>
+
+</body>
+</html>

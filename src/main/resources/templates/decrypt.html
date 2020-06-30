@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Decrypt</title>
+</head>
+<body>
+
+<form th:action="@{/decryptText}" th:object="${textToEncode}" method="post">
+    <input th:field="*{keyToEncode}" type="text" placeholder="Enter text for decrypt">
+    <input th:field="*{secretKey}" type="text" placeholder="Enter password">
+    <button type="submit">deCrypt text</button>
+    <br/>
+
+</form>
+</body>
+</html>
+
