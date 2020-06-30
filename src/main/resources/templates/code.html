@@ -2,62 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Code your text</title>
 </head>
 <body>
 
 <form th:action="@{/codeText}" th:object="${textToCode}" method="post">
+    <p>password shouldn't be shorter than test</p>
     <input th:field="*{textForCrypt}" type="text" placeholder="Enter text for crypt">
     <input th:field="*{secretKey}" type="text" placeholder="Enter password">
+
+    <p th:text="*{publicKey}"></p>
     <button type="submit">Crypt text</button>
     <br/>
-
-    <!--   <input th:field="*{publicKey}" type="text" placeholder="Result">-->
-    <!--    <label for="publicKey">Result: </label>-->
-    <!--    <input type="text" id="publicKey" name="publicKey">-->
-
 </form>
 
-
-<!--    <label for="publickeyencode">Input text to endoce: </label>-->
-<!--    <input type="text" id="publickeyencode" name="publickeyencode"> <br/> <br/>-->
-<!--    <label for="passwordencode">Password: </label>-->
-<!--    <input type="text" id="passwordencode" name="passwordencode"> <br/> <br/>-->
-
-<!--    <input type="submit" value="Encrupt"/> <br/>-->
-<!--    <label for="encodedText">encoded result: </label>-->
-<!--    <input type="text" id="encodedText" name="encodedText"> <br/> <br/>-->
-<!--</form>-->
 </body>
 </html>
-
-<!--<form th:action="@{/cars/filter-car}" th:object="${dateS}" method="post">-->
-<!--    <input type="date" th:field="*{startsDate}" th:value="*{startsDate}" placeholder="starts date">-->
-<!--    <input type="date" th:field="*{endsDate}" th:value="*{endsDate}" placeholder="ends date">-->
-<!--    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">find car</button>-->
-<!--</form>-->
-<!--</nav>-->
-<!--<table class="table table-dark">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--        <th scope="col">Id</th>-->
-<!--        <th scope="col">Mark</th>-->
-<!--        <th scope="col">Model</th>-->
-<!--        <th scope="col">Color</th>-->
-<!--        <th scope="col">Production Date</th>-->
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--    <tr scope="row" th:each="c: ${cars}">-->
-<!--        <td th:text="${c.getCarId()}"></td>-->
-<!--        <td th:text="${c.getMark()}"></td>-->
-<!--        <td th:text="${c.getModel()}"></td>-->
-<!--        <td th:text="${c.getColor()}"></td>-->
-<!--        <td th:text="${c.getProductionDate()}"></td>-->
-<!--        <td><a th:href="@{/cars/delete/{id}(id=${c.carId})}" class="btn btn-primary btn-lg active" role="button"-->
-<!--               aria-pressed="true">Delete</a></td>-->
-<!--        <td><a th:href="@{/cars/update/{id}(id=${c.carId})}" class="btn btn-secondary btn-lg active" role="button"-->
-<!--               aria-pressed="true">Update</a></td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--</table>-->

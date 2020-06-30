@@ -2,39 +2,17 @@ package pl.iwona.securityencoderweek4.model;
 
 public class Text {
 
-    private CharSequence textForCrypt; //alina
-    private CharSequence secretKey; //admin
-    private CharSequence publicKey; // xxxx
+    private CharSequence textForCrypt; //ala - tekst
+    private CharSequence secretKey; //admin - password
+    private CharSequence publicKey; //aom - szyfr
 
     public Text() {
     }
 
-    public Text(CharSequence textForCrypt, CharSequence secretKey, CharSequence publicKey, CharSequence keyToEncode, String textAfterdecrypt) {
+    public Text(CharSequence textForCrypt, CharSequence secretKey, CharSequence publicKey) {
         this.textForCrypt = textForCrypt;
         this.secretKey = secretKey;
         this.publicKey = publicKey;
-        this.keyToEncode = keyToEncode;
-        this.textAfterdecrypt = textAfterdecrypt;
-    }
-
-    private CharSequence keyToEncode; // xxx
-    private String secretKeyUse;// admin
-    private String textAfterdecrypt;// alina
-
-    public CharSequence getKeyToEncode() {
-        return keyToEncode;
-    }
-
-    public void setKeyToEncode(CharSequence keyToEncode) {
-        this.keyToEncode = keyToEncode;
-    }
-
-    public String getTextAfterdecrypt() {
-        return textAfterdecrypt;
-    }
-
-    public void setTextAfterdecrypt(String textAfterdecrypt) {
-        this.textAfterdecrypt = textAfterdecrypt;
     }
 
     public CharSequence getTextForCrypt() {

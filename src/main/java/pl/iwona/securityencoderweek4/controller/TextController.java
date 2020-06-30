@@ -6,58 +6,54 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.iwona.securityencoderweek4.encoder.AlgorytmImpl;
-import pl.iwona.securityencoderweek4.encoder.TextService;
 import pl.iwona.securityencoderweek4.model.Text;
 
 @Controller("/")
 public class TextController {
 
-    private TextService textService;
     private AlgorytmImpl algorytm;
 
-    public TextController(TextService textService, AlgorytmImpl algorytm) {
-        this.textService = textService;
+    public TextController(AlgorytmImpl algorytm) {
         this.algorytm = algorytm;
     }
 
     @GetMapping("/code")
     public String Start(Model model) {
-        model.addAttribute("textToCode", new Text());
-        model.addAttribute("secretKey", new Text());
-        model.addAttribute("publicKey", new Text());
+        model.addAttribute("textToCode", new Text());//tekst
+        model.addAttribute("secretKey", new Text());//password
+        model.addAttribute("publicKey", new Text());// szyfr
         return "code";
     }
 
     @PostMapping("/codeText")
     public String codeText(@ModelAttribute Text text, Model model) {
-        text.setTextForCrypt(text.getTextForCrypt());
-        text.setSecretKey(text.getSecretKey());
-        String encode = algorytm.encode(text.getSecretKey());
-        text.setPublicKey(algorytm.encode(encode));
+        text.setTextForCrypt(text.getTextForCrypt()); //text
+        text.setSecretKey(text.getSecretKey());//password
+        String encode = algorytm.encode(text.getTextForCrypt(), text.getSecretKey());
+        text.setPublicKey(encode);//szyfr
+        model.addAttribute("textToCode", text);
+        model.addAttribute("secretKey", text);
+        model.addAttribute("publicKey", text);
         return "result";
     }
-
 
     @GetMapping("/decode")
     public String Start2(Model model) {
         model.addAttribute("textToEncode", new Text());
         model.addAttribute("secretKey", new Text());
-        model.addAttribute("textAfterdecrypt", new Text());
         model.addAttribute("publicKey", new Text());
         return "decrypt";
     }
 
     @PostMapping("/decryptText")
     public String postDecrypt(@ModelAttribute Text text, Model model) {
-//        model.addAttribute("secretKey", text);
-//        model.addAttribute("keyToEncode", text );
-//        model.addAttribute("textAfterdecrypt", text);
-//        model.addAttribute("publicKey", text);
-        text.setKeyToEncode(algorytm.decrypt(text.getKeyToEncode(), text.getSecretKey().toString()));
+        text.setPublicKey(text.getPublicKey());
         text.setSecretKey(text.getSecretKey());
-//        algorytm.decrypt(text.getSecretKey());
-        text.setTextAfterdecrypt(text.getTextAfterdecrypt());
-        text.setTextForCrypt(text.getTextForCrypt());
+        String decrypt = algorytm.decrypt(text.getPublicKey(), text.getSecretKey().toString());
+        text.setTextForCrypt(decrypt);
+        model.addAttribute("textToCode", text); // text
+        model.addAttribute("secretKey", text); // password
+        model.addAttribute("publicKey", text); // szyfr -teraz odszyfrowuje
         return "decryptresult";
     }
 }

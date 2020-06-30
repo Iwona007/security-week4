@@ -2,7 +2,6 @@ package pl.iwona.securityencoderweek4.encoder;
 
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Scanner;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,9 +12,9 @@ import pl.iwona.securityencoderweek4.model.Text;
 public class AlgorytmImpl implements PasswordEncoder {
 
     private char[][] alphabet = new char['z' + 1]['z' + 1];
+    private String correctString;
     private Text text;
-
-    
+    char c = ' ';
 
     public AlgorytmImpl() {
         createAlphabetTable();
@@ -41,26 +40,30 @@ public class AlgorytmImpl implements PasswordEncoder {
         }
     }
 
-    char c = ' ';
-
-    public String cryptData(CharSequence rawPassword) {
+    public String cryptData(CharSequence rawPassword, CharSequence correctString) {
         char[] textCharTable = rawPassword.toString().toCharArray(); //ala
-        char[] correctCharTable = rawPassword.toString().toCharArray();// admin
+        char[] correctCharTable = correctString.toString().toCharArray();// admin
         System.out.print("\n    Rezultat: ");
 
         StringBuilder sb = new StringBuilder();
         for (int index = 0; index < textCharTable.length; index++) {
             System.out.print(alphabet[textCharTable[index]][correctCharTable[index]]);
             c = alphabet[textCharTable[index]][correctCharTable[index]];
-            sb.append(c);
+            sb.append(c);//aom
         }
-//        sb.append(generateSafeToken());
-        return sb.toString();
+        sb.append(generateSafeToken());//salt
+        return sb.toString();//szyfr+salt
     }
 
     @Override
     public String encode(CharSequence rawPassword) {
-        return cryptData(rawPassword);
+        return encode(rawPassword, correctString);
+    }
+
+    public String encode(CharSequence rawPassword, CharSequence correctString) {
+        System.out.println(rawPassword); // tylko żeby zobaczyć wynik na konsoli
+        System.out.println(correctString); // tylko żeby zobaczyć wynik na konsoli
+        return cryptData(rawPassword, correctString);
     }
 
     private String generateSafeToken() {
@@ -76,16 +79,17 @@ public class AlgorytmImpl implements PasswordEncoder {
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
         if (rawPassword != null) {
-           decrypt(encode(rawPassword), encodedPassword);
+            decrypt(encode(rawPassword), encodedPassword);
             return true;
         }
         return false;
     }
 
     public String decrypt(CharSequence inputText, String correctString) {
-        char[] textCharTable = inputText.toString().toCharArray();
-        char[] correctCharTable = correctString.toCharArray();
+        char[] textCharTable = inputText.toString().toCharArray();//szyfr
+        char[] correctCharTable = correctString.toCharArray();//haslo
         System.out.print("\n    Rezultat:");
+
         StringBuilder sb = new StringBuilder();
         for (int index = 0; index < textCharTable.length; index++) {
             if (textCharTable[index] != ' ') {
@@ -93,48 +97,13 @@ public class AlgorytmImpl implements PasswordEncoder {
                     if (textCharTable[index] == alphabet[correctCharTable[index]][z]) {
                         System.out.print(alphabet['a'][z]);
                         c = alphabet['a'][z];
+                        sb.append(c);//text
                     }
                 }
             } else {
                 System.out.print(" ");
             }
         }
-        return sb.append(c).toString();
+        return sb.toString();
     }
-
-    private Scanner input = new Scanner(System.in);
-    public static void main(String[] args) {
-        AlgorytmImpl app = new AlgorytmImpl();
-        app.createAlphabetTable();
-        app.getDataFromUser();
-    }
-    public void getDataFromUser() {
-        System.out.println("\n\n Wybierz opcje: \n\n 1. Szyfruj\n 2. Deszyfruj\n 3. Koniec\n");
-        System.out.print("#:");
-        String option = input.nextLine();
-        if (option.equals("1")) {
-            System.out.println("Podaj text do szyfrowania (max 255 znakow)");
-            System.out.print("  text:");
-            String inputText = input.nextLine();
-            System.out.println("\nPodaj Haslo nie krrotsze niz " + inputText.length() + "(max 255 znakow)");
-            System.out.print("  haslo:");
-            String   correctString = input.nextLine();
-            cryptData(inputText);
-            getDataFromUser();
-        } else if (option.equals("2")) {
-            System.out.println("Podaj text do odszyfrowania (max 255 znakow)");
-            System.out.print("  text:");
-            String inputText = input.nextLine();
-            System.out.println("\nPodaj Haslo nie krrotsze niz " + inputText.length() + "(max 255 znakow)");
-            System.out.print("  haslo:");
-            String correctString = input.nextLine();
-            decrypt(inputText, correctString);
-            getDataFromUser();
-        } else if (option.equals("3")) {
-            System.out.println("Koniec.....");
-        } else {
-            getDataFromUser();
-        }
-    }
-
 }
