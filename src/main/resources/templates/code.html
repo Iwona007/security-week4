@@ -7,7 +7,7 @@
 <body>
 
 <form th:action="@{/codeText}" th:object="${textToCode}" method="post">
-    <p>password shouldn't be shorter than test</p>
+    <p>password shouldn't be shorter than provided text</p>
     <input th:field="*{textForCrypt}" type="text" placeholder="Enter text for crypt">
     <input th:field="*{secretKey}" type="text" placeholder="Enter password">
 
